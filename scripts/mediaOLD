@@ -1,0 +1,2 @@
+playerctl  -F metadata -f '{ "title": "{{title}}", "artist": "{{artist}}", "status": "{{status}}", "position": "{{position}}", "length": "{{mpris:length}}", "album": "{{xesam:album}}"}'
+

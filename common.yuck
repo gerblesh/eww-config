@@ -1,0 +1,35 @@
+(defwidget horizontal-metric [label value onchange class label_class box_orientation scale_orientation space-evenly max round]
+	(box :orientation box_orientation
+
+			 :space-evenly space-evenly
+		(box :class label_class label)
+		(scale :min 0
+					 :max max
+					 :active {onchange != ""}
+					 :value value
+					 :orientation scale_orientation
+					 :onchange onchange
+					 :hexpand "true"
+					 :class class
+					 :round-digits round
+		)
+	)
+)
+
+(defwidget vertical-metric [label value onchange class label_class box_orientation scale_orientation max]
+	(box :orientation box_orientation
+			 :class class
+			 :space-evenly false
+		(scale :min 0
+					 :max max
+					 :active {onchange != ""}
+					 :value value
+					 :orientation scale_orientation
+					 :onchange onchange
+					 :flipped "true"
+					 :class "scale-progress vertical"
+					 :round-digits 1
+		)
+		(box :class label_class label)
+	)
+)

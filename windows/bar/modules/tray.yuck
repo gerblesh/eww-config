@@ -1,0 +1,12 @@
+
+(defwidget tray-btn []
+	(box
+		:class "module"
+		(eventbox
+			:cursor "pointer"
+			:onclick "./scripts/bar/modules/toggle-tray"
+			(label :text "󱞬" :class "brightness-label")
+		)
+	)
+)
+

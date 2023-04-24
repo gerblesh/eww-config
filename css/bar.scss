@@ -1,0 +1,52 @@
+.bar {
+  background-color: $main;
+  border-radius: 0px 20px 20px 0px;
+  transition: all 0.2s ease;
+  padding-right: 2px;
+}
+
+.nogaps {
+  background-color: $base;
+  border-radius: 0px;
+  border-right: solid 2px $accent;
+  padding-right: 0px;
+}
+
+.workspace-entry label{
+   color: $tertiary;
+}
+
+.circular-progress-mem,
+.circular-progress-cpu,
+.circular-progress-bat{
+  color: $green;
+  background-color: $surface0
+}
+
+.circular-progress-bat label{
+  padding: 20px;
+}
+
+.workspace-entry-current,
+.workspace-entry {
+  border-left: solid 2px transparent;
+  padding-right: 2px;
+  padding: 5px 2px 5px 2px;
+}
+
+.workspace-entry-current{
+  background-color: $secondary;
+  border-left: solid 2px $accent;
+  border-radius: 0px 15px 15px 0px;
+}
+.workspace-entry-current label {
+  color: $accent;
+}
+
+.last-module,
+.module {
+  background-color: $mantle;
+  border-left: solid 2px $accent;
+  border-radius: 0px 15px 15px 0px;
+  margin: 10px 0px;
+}

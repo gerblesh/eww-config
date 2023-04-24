@@ -1,0 +1,15 @@
+#!/bin/fish
+
+eww open brightness-popup
+eww update anim-brightness-popup-open=true
+eww update brightness-popup-rev=true
+
+
+sleep 0.6s
+
+eww update anim-brightness-popup-open=false
+eww update brightness-popup-rev=false
+
+
+sleep 0.2s
+eww close brightness-popup

@@ -1,0 +1,10 @@
+#!/bin/fish
+
+set tray (pidof waybar)
+
+
+if test "$tray" = ""
+	waybar &
+else
+	killall waybar
+end

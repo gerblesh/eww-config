@@ -1,0 +1,81 @@
+/* these are the css files I use for my config!
+please note that my screen is Hi-DPI and you will likely have to tweak values inside of these css files
+to get scaling to work properly. You will also probably have to tweak values outside of CSS where there is `:style`
+in the `*.yuck` files
+*/
+
+
+
+
+/* EVERYTHING requires these color CSS files
+ feel free to modify to your hearts content however
+
+current color scheme: catppuccin mocha, lavender accent
+
+variables used by every config:
+  from the colors.scss file:
+  $accent - the accent color
+  $secondary - the secondary or "highlight" color
+  $main - the main or "base" color
+  $tertiary - an overlay brighter color
+  
+  directly from the pallete:
+  $text - the text color
+  $subtext0 - subtext color
+*/
+@import "./css/pallete.scss"
+@import "./css/colors.scss"
+
+/* CSS files for individual aspects of the config, OSD, menu, bar, etc
+(besides colors and color pallete, as well as sliders.scss for styling the sliders)
+*/
+@import "./css/bar.scss"
+@import "./css/menu.scss"
+@import "./css/popups.scss"
+
+// everything
+*{
+   //unsets from current gtk theme, preventing all of the fuckery
+  all: unset;
+  color: $text;
+  font-size: 30px;
+  font-family: OverpassMono NerdFont;
+}
+
+// color label classes
+// probably will be removed, don't rely on these.
+.blue-label,
+.blue-label label{
+  color: $blue;
+}
+.pink-label{
+  color: $pink;
+}
+.mauve-label,
+.mauve-label label{
+  color: $mauve;
+}
+
+.sapphire-label label{
+  color: $sapphire;
+}
+
+.lavender-label {
+  color: $lavender;
+}
+
+
+// for some reason my dumb ass decided to put the padding here
+// TODO: remove this shit and become sane
+.sapphire-label,
+.brightness-label,
+.volume-label{
+  font-size: 30px;
+  margin-top: 20px;
+}
+.sapphire-label,
+.brightness-label{
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+

@@ -1,0 +1,23 @@
+(defwidget value-module [value onchange label revealer-var revealed round max]
+	(eventbox
+	:onhover "${EWW_CMD} update ${revealer-var}=true"
+	:onhoverlost "${EWW_CMD} update ${revealer-var}=false"
+		(box :orientation "v"
+				:space-evenly false
+			(revealer :reveal revealed :transition "slideup" :duration "230ms"
+				(scale :min 0
+							:max max
+							:class "scale-progress trough vertical"
+							:value value
+							:orientation "v"
+							:onchange onchange
+							:flipped "true"
+							:round-digits round
+				)
+			)
+			(box
+			:class "brightness-label"
+			(label :text label ))
+		)
+	)
+)

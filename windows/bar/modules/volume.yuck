@@ -1,0 +1,20 @@
+(defvar volume-rev false)
+(include "./windows/bar/modules/value-module.yuck")
+
+(defwidget volume-module []
+	(box :class "module"
+		(value-module
+		:value "${volume.percent}"
+		:onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%"
+		
+		:label {volume.audio == "0" ? "󰝟" : "${volume.percent}" >= 66 ? "󰕾" : "${volume.percent}" >= 33 ? "󰖀" : "󰕿" }
+		:revealer-var "volume-rev"
+		:revealed volume-rev
+		:round 1
+		:max 101
+		)
+	)
+)
+
+
+

@@ -1,0 +1,28 @@
+.scale-progress trough {
+  background-color: $tertiary;
+  border-radius: 50px;
+  min-height: 5px;
+  min-width: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
+    highlight{
+      background-color: $accent;
+      color: #000000;
+      border-radius: 20px;
+      margin: -4px;
+    }
+}
+
+.vertical trough{
+   min-height: 100px;
+   min-width: 5px;
+   margin-top: 20px;
+   margin-bottom: 5px;
+}
+
+.music-progress trough {
+  margin-left: 0px;
+  margin-right: 0px;
+  min-width: 333px;
+}
+

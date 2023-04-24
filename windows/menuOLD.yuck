@@ -1,0 +1,150 @@
+; this is purely for reference and came from my old dotfiles, don't use this.
+(defwindow menu
+	:class "popup"
+	:monitor 0
+	:windowtype "normal"
+	:exclusive true
+	:geometry (geometry :width "20%" :height "1430px" :anchor "top right")
+	(menu)
+)
+
+(defwidget menu []
+	(box :orientation "v" :space-evenly "false"
+		(box :orientation "h" :space-evenly "false"
+			(box :orientation "v" :class "time-box" :space-evenly "true"
+				(label :text " ${clock_time}" :class "blue-label" )
+				(label :text " ${clock_date}" :class "blue-label")
+			)
+			(box :orientation "v" :class "time-box" :space-evenly "true"
+				(label :text uptime :class "pink-label")
+			)
+		)
+		(box :orientation "v" :class "brightness-box" :space-evenly "false"
+			(horizontal-brightness-metric)
+		)
+		(box :orientation "v" :class "volume-box" :space-evenly "false"
+			(horizontal-volume-metric)
+		)
+		(box :orientation "v" :class "mic-box" :space-evenly "false"
+			(horizontal-mic-volume-metric)
+		)
+		(box :orientation "h"
+			(box :orientation "v"
+				(box :orientation "h" :class "circle-metric" :space-evenly "true"
+					(circular-progress :value "${EWW_BATTERY["BAT1"].capacity}" :thickness 10 :class "circular-progress-bat" (label :text " 󰁹 ${EWW_BATTERY["BAT1"].capacity}%"))
+				)
+				(box :orientation "h" :class "circle-metric" :space-evenly "true"
+					(circular-progress :value {EWW_RAM.used_mem_perc} :thickness 10 :class "circular-progress-mem" (label :text "  ${round((EWW_RAM.used_mem_perc),0)}%"))
+				)
+			)
+				(box :orientation "h" :class "circle-metric" :space-evenly "true"
+					(circular-progress :value "${EWW_CPU.avg}" :thickness 12 :class "circular-progress-cpu" (label :text " 󰻠 ${round((EWW_CPU.avg),0)}%"))
+				)
+		)
+		(media-player)
+		(current-calendar)
+		(logout-menu :geometry (geometry :anchor "bottom"))
+	)
+)
+
+(defwidget horizontal-mic-volume-metric []
+	(horizontal-metric :label {muted-mic-volume == "[MUTED]" ? "" : "" }
+					:space-evenly "false"
+					:value mic-volume
+					:onchange "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ {}"
+					:class "horizontal-metric"
+					:label_class "mauve-label"
+					:scale_orientation "h"
+					:box_orientation "h"
+					:max 2
+					:round ""
+	)
+)
+
+(defwidget horizontal-volume-metric []
+	(horizontal-metric :label {muted-volume == "[MUTED]" ? "󰝟" : volume >= 0.75 ? "" : volume >= 0.50 ? "󰕾" : volume >= 0.25 ? "󰖀" : "󰕿" }
+					:space-evenly "false"
+					:value volume
+					:onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}"
+					:class "horizontal-metric"
+					:label_class "blue-label"
+					:scale_orientation "h"
+					:box_orientation "h"
+					:max 2
+					:round 0.0
+	)
+)
+(defwidget horizontal-brightness-metric []
+	(horizontal-metric :label {brightness >= 66 ? "󰃠" : brightness >= 33 ? "󰃟" : "󰃞"}
+					:space-evenly "false"
+					:value brightness
+					:onchange "light -S {}"
+					:class "horizontal-metric"
+					:label_class "label"
+					:box_orientation "h"
+					:scale_orientation "h"
+					:max 101
+					:round 1
+	)
+)
+
+(defwidget logout-menu []
+	(box :orientation "h" :class "logout-menu"
+		(button :class "button" :onclick "swaylock -d && eww close menu"
+			(label :text "")
+		)
+		(button :class "button" :onclick "systemctl suspend"
+			(label :text "󰤄")
+		)
+		(button :class "button" :onclick "systemctl poweroff"
+			(label :text "")
+		)
+		(button :class "button" :onclick "systemctl reboot"
+			(label :text "")
+		)
+		(button :class "button" :onclick "loginctl terminate-user $USER"
+			(label :text "󰍃")
+		)
+	)
+)
+
+(defwidget current-calendar []
+	(box :class "metrics-menu"
+		(calendar :class "calendar")
+	)
+)
+(defpoll media-info :interval "0.1s" "empress now-playing")
+(defpoll media-volume :interval "0.1s" "empress volume")
+
+(defwidget media-player []
+	(box :orientation "h" :space-evenly "false"
+		(box :orientation "v" :class "circle-metric" :hexpand "true"
+			(box :orientation "h"
+				(button :class "button" :onclick "empress previous " (label :text "󰒮"))
+				(button :class "button" :onclick "empress play-pause" (label :text {media-info.status == "Stopped" ? "" : media-info.status == "Playing" ? "󰏤" : "󰐊"}))
+				(button :class "button" :onclick "empress next" (label :text "󰒭"))
+			)
+			(label :text {media-info.status == "Stopped" ? "Nothing Playing" : "${media-info.status}"} :class "label")
+			(scroll :vscroll "false" :hscroll "true"
+				(label :text {media-info.status == "Stopped" ? "" : media-info.album != "" ? "${media-info.title} - ${(media-info.artist[0])} - ${media-info.album}" : media-info.artist[0] != "" ? "${media-info.title} - ${media-info.artist[0]}"  : "${media-info.title}"})
+			)
+		)
+		(box :orientation "v" :class "vertical-slider-metric"
+			(media-volume)
+		)
+	)
+)
+
+(defwidget media-volume []
+	(vertical-metric :label ""
+				:space-evenly "false"
+				:value media-volume
+				:onchange "empress volume {}"
+				:class "vertical-metric"
+				:label_class "sapphire-label"
+				:box_orientation "v"
+				:scale_orientation "v"
+				:max 2
+				:round ""
+	)
+)

@@ -1,0 +1,14 @@
+#!/bin/fish
+
+eww open volume-popup
+eww update anim-volume-popup-open=true
+eww update volume-popup-rev=true
+
+
+sleep 0.6s
+
+eww update anim-volume-popup-open=false
+eww update volume-popup-rev=false
+
+sleep 0.2s
+eww close volume-popup

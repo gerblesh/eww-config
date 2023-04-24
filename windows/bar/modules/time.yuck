@@ -1,0 +1,27 @@
+(defvar rev-date false)
+
+
+(defwidget time-module []
+	
+	(eventbox
+	:onhover "${EWW_CMD} update rev-date=true"
+	:onhoverlost "${EWW_CMD} update rev-date=false"
+		(box :orientation "v" :space-evenly "false"
+			(box
+				:vexpand "true"
+			)
+			(box :class "module" :orientation "v" :style "margin: 0px;" :space-evenly "false"
+			(label
+				:vexpand "false"
+				:text clock_time
+			)
+			(revealer :reveal rev-date :transition "slidebottom" :duration "300ms"
+			(label :text clock_date :justify "center")
+			)
+			)
+			(box
+				:vexpand "true"
+			)
+		)
+	)
+)

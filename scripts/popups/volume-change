@@ -1,0 +1,9 @@
+#!/bin/fish
+set OPEN (eww windows | grep "*volume-popup")
+
+if test OPEN = ""
+       $HOME/.config/eww/scripts/popups/volume-popup &
+else
+       killall volume-popup
+       $HOME/.config/eww/scripts/popups/volume-popup &
+end

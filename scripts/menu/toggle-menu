@@ -1,0 +1,22 @@
+#!/bin/bash
+# THIS SCRIPT IS REQUIRED FOR THE BAR
+
+menu=$(eww get sysmenu-rev)
+
+if [[ "$menu" == "true" ]]
+then
+	eww update media-rev=false
+	sleep 0.1s
+	eww update anim-sysmenu-open=false
+	eww update sysmenu-rev=false
+	
+	sleep 0.2s
+	eww close sysmenu
+	
+else
+	eww update anim-sysmenu-open=true
+	eww open sysmenu
+	eww update sysmenu-rev=true
+	sleep 0.1s
+	eww update media-rev=true
+fi

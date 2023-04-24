@@ -1,0 +1,51 @@
+(include "./modules/workspaces.yuck")
+(include "./modules/brightness.yuck")
+(include "./modules/volume.yuck")
+(include "./modules/tray.yuck")
+(include "./modules/time.yuck")
+(include "./modules/battery.yuck")
+
+(deflisten fullscreen :initial "" "./scripts/bar/bar")
+
+(defwindow ewwbar
+	:monitor 0
+	:windowtype "dock"
+	:exclusive true
+	:geometry (geometry :width "45px" :height "100%" :anchor "center left")
+	(box :orientation "v" :space-evenly "true"
+	:class "bar ${fullscreen}"
+	(top)
+	(center)
+	(bottom)
+	)
+)
+
+
+(defwidget top [] 
+	(box :orientation "v" :space-evenly "false"
+		(eventbox
+		:onclick "./scripts/toggle-menu &"
+		:cursor "pointer"
+		(label :text "" :class "lavender-label" :style "margin: 15px 0px 10px 0px;")
+		)
+		(workspaces-widget)
+	)
+)
+
+(defwidget center []
+	(time-module)
+)
+
+(defwidget bottom []
+	(box :orientation "v" :space-evenly "false"
+		(box :vexpand "true")
+		(brightness-module)
+		(volume-module)
+		(battery-module)
+		(tray-btn)
+	)
+)
+
+
+
+

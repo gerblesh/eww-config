@@ -1,0 +1,67 @@
+
+
+(defwidget volume-slider []
+	(box :orientation "h" :halign "center"
+		(vertical-metric :label {volume.audio == "0" ? "󰝟" : "${volume.percent}" >= 66 ? "󰕾" : "${volume.percent}" >= 33 ? "󰖀" : "󰕿" }
+						:space-evenly "false"
+						:value "${volume.percent}"
+						:onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%"
+						:class "vertical-metric"
+						:label_class "brightness-label"
+						:scale_orientation "v"
+						:box_orientation "v"
+						:max 101
+						:round 1
+		)
+	)
+)
+
+
+
+
+(defvar volume-popup-rev false)
+(defvar anim-volume-popup-open true)
+
+(defwindow volume-popup
+	:monitor 0
+	:windowtype "normal"
+	:exclusive true
+	:geometry (geometry :width "2%" :height "10%" :y "44%" :x 5)
+	(box
+		:class "popup"
+		:style "${volume-popup-rev ? '${brightness-popup-rev ? "margin-left: 60px;" : ""}' : 'margin-left: -50px; margin-right: 50px;'} ${anim-volume-popup-open ? 'transition: 200ms cubic-bezier(0.05, 0.7, 0.1, 1);' : 'transition: 150ms cubic-bezier(0.3, 0, 0.8, 0.15);'}"
+		(volume-slider)
+	)
+)
+
+
+
+(defwidget brightness-slider []
+	(box :orientation "h" :halign "center"
+		(vertical-metric :label {brightness >= 66 ? "󰃠" : brightness >= 33 ? "󰃟" : "󰃞"}
+						:value brightness
+						:onchange "light -S {}"
+						:class "vertical-metric"
+						:label_class "brightness-label"
+						:box_orientation "v"
+						:scale_orientation "v"
+						:max 101
+						:round 1
+		)
+	)
+)
+
+(defvar brightness-popup-rev false)
+(defvar anim-brightness-popup-open true)
+
+(defwindow brightness-popup
+	:monitor 0
+	:windowtype "normal"
+	:exclusive false
+	:geometry (geometry :width "2%" :height "10%" :y "44%" :x 5)
+	(box
+	:class "popup"
+	:style "${brightness-popup-rev ? '' : 'margin-left: -50px; margin-right: 50px;'} ${anim-brightness-popup-open ? 'transition: 200ms cubic-bezier(0.05, 0.7, 0.1, 1);' : 'transition: 150ms cubic-bezier(0.3, 0, 0.8, 0.15);'}"
+	(brightness-slider)
+	)
+)

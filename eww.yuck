@@ -1,0 +1,13 @@
+
+(defpoll clock_time :interval "30s" "date +%H%n%M")
+(defpoll clock_date :interval "1h" "date +%n%d%n%n%m%n%n%y%n")
+
+(deflisten volume "./scripts/common/volume")
+(deflisten battery "./scripts/common/battery")
+(defpoll brightness :interval "50ms" "light")
+
+(include "./common.yuck")
+(include "./windows/popups.yuck")
+(include "./windows/menu.yuck")
+(include "./windows/bar.yuck")
+

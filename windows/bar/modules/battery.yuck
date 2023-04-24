@@ -1,0 +1,17 @@
+(defvar rev-battery false)
+
+(defwidget battery-module []
+	(eventbox 
+	:onhover "${EWW_CMD} update rev-battery=true"
+	:onhoverlost "${EWW_CMD} update rev-battery=false"
+	(box :orientation "v" :space-evenly "false"
+		:class "module"
+			(revealer :reveal rev-battery :transition "slidetop" :duration "230ms"
+				(label :text "${battery.percent}\\\n${battery.status}" :justify "center")
+			)
+			
+			(label :text "${battery.icon}" :class "brightness-label":style "color: ${battery.color}")
+		)
+	)
+)
+

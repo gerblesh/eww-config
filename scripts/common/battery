@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+icons=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹")
+num_icons=$(bc <<<"100 / ${#icons[@]}")
+
+geticon() {
+  level=$(awk -v n="$CAPACITY" -v c="$num_icons" 'BEGIN{print int(n/c-1)}')
+  if [[ "$level" -lt 0 ]]; then
+    level=0
+  fi
+  echo "${icons[$level]}"
+}
+
+
+
+status() {
+  if [ "$STATE" = "Charging" ]; then
+    echo -n "󱟡"
+  elif [ "$STATE" = "Discharging" ]; then
+    echo "󱟟"
+  else
+    echo "󱟣"
+  fi
+}
+
+color() {
+  if [ "$CAPACITY" -le 20 ]; then
+    echo '#f38ba8'
+  else
+    echo '#cdd6f4'
+  fi
+}
+
+
+
+while true; do
+  CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
+  STATE=$(cat /sys/class/power_supply/BAT1/status)
+
+  echo '{ "icon": "'"$(geticon)"'", "percent": '"$CAPACITY"', "color": "'"$(color)"'","status": "'"$(status)"'"}'
+  sleep 3
+done

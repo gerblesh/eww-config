@@ -1,0 +1,19 @@
+(defvar brightness-rev false)
+(include "./windows/bar/modules/value-module.yuck")
+
+(defwidget brightness-module []
+	(box :class "module"
+		(value-module
+		:value brightness
+		:onchange "light -S {}"
+		:label {brightness >= 66 ? "󰃠" : brightness >= 33 ? "󰃟" : "󰃞"}
+		:revealer-var "brightness-rev"
+		:revealed brightness-rev
+		:round 1
+		:max 101
+		)
+	)
+)
+
+
+

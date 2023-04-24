@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "0"
+
+function handle {
+  if [[ ${1:0:12} == "fullscreen>>" ]]; then
+    echo "${1:12:13}"
+  fi
+}
+
+
+socat -U - UNIX-CONNECT:/tmp/hypr/$(echo $HYPRLAND_INSTANCE_SIGNATURE)/.socket2.sock | while read line; do handle $line; done

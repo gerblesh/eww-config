@@ -1,0 +1,88 @@
+(defvar sysmenu-rev false)
+(defvar anim-sysmenu-open true)
+(defvar media-rev false)
+(defvar media-player "Spot")
+(deflisten media-info :initial "" "./scripts/menu/music")
+(deflisten media-volume "playerctl -F volume")
+
+(defwindow sysmenu
+	:monitor 0
+	:windowtype "normal"
+	:exclusive false
+	:geometry (geometry :x "5px" :y "5px" :width "500px" :height "250px" :anchor "top left")
+	(box
+		:style "${sysmenu-rev ? '' : 'margin-left: -550px; margin-right: 550px;'} ${anim-sysmenu-open ? 'transition: 200ms cubic-bezier(0.05, 0.7, 0.1, 1);' : 'transition: 150ms cubic-bezier(0.3, 0, 0.8, 0.15);'}"
+		(box :hexpand "false"
+			:spacing "10"
+			:class "powermenu"
+			:orientation "v"
+			:space-evenly "false"
+			(logout-menu)
+			(revealer
+				:transition "slidebottom"
+				:duration "0.15s"
+				:reveal media-rev
+				(media-player)
+			)
+		)
+	)
+)
+
+(defwidget logout-menu []
+	(box :orientation "h"
+		:spacing "10px"
+		(box :orientation "h" :class "inner-box" :style ""
+			(button :class "button" :onclick "swaylock -d && eww close menu"
+				(label :text "")
+			)
+			(button :class "button" :onclick "systemctl suspend"
+				(label :text "󰤄")
+			)
+			(button :class "button" :onclick "systemctl poweroff"
+				(label :text "")
+			)
+			(button :class "button" :onclick "systemctl reboot"
+				(label :text "")
+			)
+			(button :class "button" :onclick "loginctl terminate-user $USER"
+				(label :text "󰍃")
+			)
+		)
+	)
+)
+
+(defwidget media-player []
+
+	(box :orientation "h" :space-evenly false
+		:spacing "5"
+		(box :orientation "v" :space-evenly "false" :class "inner-box" :style "min-height: 170px; margin-bottom: 2px;"
+			(box :orientation "h" :space-evenly "false" :style "margin-top: 20px; padding-left: 30px;"
+				(box :orientation "v" :hexpand "true" :space-evenly "false"
+					(label :class "title" :xalign 0 :text {media-info == "" ? "Nothing Playing" : media-info.status == "Stopped" ? "Nothing Playing" : "${media-info.title}"} :limit-width 24)
+					(label :xalign 0 :limit-width 32 :class "subtitle" :text {media-info == "" ? "" : media-info.status == "Stopped" ? "" : media-info.album != "" ? "${(media-info.artist)} - ${media-info.album}" : "${media-info.artist}"})
+					
+				)
+				(box :hexpand true)
+				(button :class "media-play ${media-info.status == "󰐊" ? "Paused" : ""}" :vexpand "false":style "margin-right: 30px;" :onclick "playerctl play-pause" (label :text {media-info == "" ? "" : media-info.status}))
+			)
+			
+			(box :orientation "h" :style "margin: 30px 30px 0px 30px;" :space-evenly "false"
+				(button :class "button" :onclick "playerctl previous" (label :text "󰒮"))
+				(scale :class "scale-progress music-progress" :value "${media-info.position}" :max "${media-info.length}" :active "false")
+				(button :class "button" :onclick "playerctl next" (label :text "󰒭"))
+			)
+		)
+		(box :orientation "v" :class "inner-box"
+			(vertical-metric :label {volume.audio == "0" ? "󰝟" : "${media-volume}" >= 0.66 ? "󰕾" : "${media-volume}" >= 0.33 ? "󰖀" : "󰕿" }
+				:value media-volume
+				:onchange "playerctl volume {}"
+				:class "media-volume"
+				:label_class "brightness-label"
+				:box_orientation "v"
+				:scale_orientation "v"
+				:max 2
+				:round ""
+			)
+		)
+	)
+)
